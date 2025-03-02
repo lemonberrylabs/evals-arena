@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
         // Run the battle
         const battleResult = await runBattle(
             battleSetup,
-            apiConfig,
             () => {} // Progress callback (not used in API route)
         );
 

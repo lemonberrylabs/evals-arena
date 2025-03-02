@@ -59,7 +59,7 @@ export function BattleResults({ battleResult, onReset }: BattleResultsProps) {
                         Winner: {winner.modelName} ({winner.score}/100)
                     </div>
                     <p className="text-sm text-amber-800">
-                        {getEvaluation(winner.modelId)?.reasoning || 'No reasoning provided'}
+                        {getEvaluation(winner.modelName)?.reasoning || 'No reasoning provided'}
                     </p>
                 </div>
             </div>

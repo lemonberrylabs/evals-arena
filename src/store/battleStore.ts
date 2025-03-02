@@ -90,20 +90,42 @@ export const useBattleStore = create<BattleState>()((set, get) => ({
     getCurrentBattleResult: () => {
         const state = get();
 
-        if (state.status !== 'complete' || !state.judgeEvaluation.length) {
+        console.log("Getting current battle result, state:", {
+            status: state.status,
+            modelResponses: state.modelResponses.length,
+            judgeEvaluation: state.judgeEvaluation.length
+        });
+
+        if (state.status !== 'complete') {
+            console.log("Battle not complete yet, status:", state.status);
+            return null;
+        }
+
+        // Ensure we have evaluation results
+        if (!state.judgeEvaluation.length) {
+            console.error("No judge evaluations available");
             return null;
         }
 
         // Find the winner based on judge scores
         const winnerEval = [...state.judgeEvaluation].sort((a, b) => b.score - a.score)[0];
 
-        if (!winnerEval) return null;
+        if (!winnerEval) {
+            console.error("No winner evaluation found");
+            return null;
+        }
 
-        const winnerResponse = state.modelResponses.find(r => r.modelId === winnerEval.modelId);
+        let winnerResponse = state.modelResponses.find(r => r.modelId === winnerEval.modelId);
 
-        if (!winnerResponse) return null;
+        if (!winnerResponse) {
+            winnerResponse = state.modelResponses.find(r => r.modelName === winnerEval.modelId);
+            if (!winnerResponse) {
+                console.error("No matching response found for winner:", winnerEval.modelId);
+                return null;
+            }
+        }
 
-        return {
+        const result = {
             id: state.currentBattleId,
             timestamp: Date.now(),
             battleSetup: state.battleSetup,
@@ -116,6 +138,9 @@ export const useBattleStore = create<BattleState>()((set, get) => ({
                 score: winnerEval.score,
             }
         };
+
+        console.log("Constructed battle result:", result);
+        return result;
     },
 
     /**

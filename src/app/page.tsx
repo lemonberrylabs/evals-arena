@@ -28,6 +28,8 @@ export default function HomePage() {
 
   // Get the current battle result (if available)
   const currentBattleResult = getCurrentBattleResult();
+  console.log("Current battle status:", status);
+  console.log("Current battle result:", currentBattleResult);
 
   // Determine which battle result to display (current or from history)
   const battleToDisplay = selectedHistoryBattle || currentBattleResult;
@@ -57,7 +59,9 @@ export default function HomePage() {
   return (
       <Layout>
         <div className="max-w-4xl mx-auto">
-          {!battleToDisplay ? (
+          {status === 'complete' && battleToDisplay ? (
+              <BattleResults battleResult={battleToDisplay} onReset={handleReset} />
+          ) : (
               <>
                 <SecurityWarning />
 
@@ -72,6 +76,16 @@ export default function HomePage() {
                   </p>
                 </div>
 
+                {status === 'in-progress' && (
+                    <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md text-blue-800">
+                      <p className="font-medium">Battle in progress...</p>
+                      <p className="text-sm mt-1">Requesting responses and evaluating models. This may take a minute.</p>
+                      <div className="w-full bg-blue-200 rounded-full h-2.5 mt-2">
+                        <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${useBattleStore.getState().progress}%` }}></div>
+                      </div>
+                    </div>
+                )}
+
                 <BattleForm onSubmit={handleSubmit} isLoading={status === 'in-progress'} />
 
                 {status === 'error' && (
@@ -81,8 +95,6 @@ export default function HomePage() {
                     </div>
                 )}
               </>
-          ) : (
-              <BattleResults battleResult={battleToDisplay} onReset={handleReset} />
           )}
         </div>
       </Layout>

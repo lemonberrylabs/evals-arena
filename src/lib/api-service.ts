@@ -1,6 +1,6 @@
-import { BattleSetup, ModelResponse, JudgeEvaluation, Provider } from '@/types';
-import { getModelById } from '@/config/models';
-import { env } from '@/config/env';
+import { BattleSetup, ModelResponse, JudgeEvaluation, Provider, ApiConfig} from '@/types';
+import {getModelById} from '@/config/models';
+import {env} from '@/config/env';
 import OpenAI from 'openai';
 
 function createLLMClient(provider: Provider) {
@@ -191,18 +191,29 @@ Return a JSON array with each model evaluation in this format:
                 }
             ],
             temperature: 0.3,
-            response_format: { type: 'json_object' },
+            response_format: {type: 'json_object'},
         });
 
         const responseText = completion.choices[0]?.message.content || '[]';
+        console.log("Judge response:", responseText);
 
         try {
             // Extract the JSON array from the response
             const json = JSON.parse(responseText);
-            return Array.isArray(json) ? json : (json.evaluations || []);
+            const results = Array.isArray(json) ? json : (json.evaluations || []);
+
+            console.log("Final evaluations:", results);
+            return results;
         } catch (e) {
             console.error('Error parsing judge response:', e);
-            throw new Error('Failed to parse judge response');
+            // Create default evaluations as fallback
+            const defaultEvaluations = modelResponses.map(response => ({
+                modelId: response.modelId,
+                score: 50,
+                reasoning: "Error processing judge response. Default evaluation provided."
+            }));
+            console.log("Using default evaluations due to error:", defaultEvaluations);
+            return defaultEvaluations;
         }
     } catch (error: any) {
         console.error('Error in judging responses:', error);
@@ -214,9 +225,7 @@ Return a JSON array with each model evaluation in this format:
  * Runs a complete battle with the given setup
  */
 export async function runBattle(
-    battleSetup: BattleSetup,
-    onProgress: (progress: number) => void
-): Promise<{
+    battleSetup: BattleSetup, onProgress: (progress: number) => void): Promise<{
     modelResponses: ModelResponse[];
     judgeEvaluation: JudgeEvaluation[];
 }> {

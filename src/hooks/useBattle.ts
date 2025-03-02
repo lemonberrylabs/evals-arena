@@ -41,12 +41,20 @@ export function useBattle() {
                 // Update battle state with results
                 setModelResponses(modelResponses);
                 setJudgeEvaluation(judgeEvaluation);
+
+                // Set battle as complete - this triggers the UI to show results
                 setBattleStatus('complete');
+
+                // Debug logging
+                console.log("Battle complete!", { modelResponses, judgeEvaluation });
 
                 // Add to history
                 const battleResult = getCurrentBattleResult();
                 if (battleResult) {
+                    console.log("Adding battle to history:", battleResult);
                     addBattleToHistory(battleResult);
+                } else {
+                    console.error("Failed to get current battle result");
                 }
 
                 return { success: true };
