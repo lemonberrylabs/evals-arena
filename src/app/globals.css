@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 245, 245, 245;
+
+  /* Custom theme colors */
+  --primary: 220, 38, 38; /* red-600 */
+  --primary-foreground: 255, 255, 255;
+
+  --secondary: 234, 179, 8; /* amber-500 */
+  --secondary-foreground: 255, 255, 255;
+
+  --accent: 220, 38, 38; /* red-600 (10% opacity for bg) */
+  --accent-foreground: 220, 38, 38; /* red-600 */
+
+  --background: 245, 245, 245;
+  --foreground: 15, 23, 42; /* slate-900 */
+
+  --card: 255, 255, 255;
+  --card-foreground: 15, 23, 42; /* slate-900 */
+
+  --popover: 255, 255, 255;
+  --popover-foreground: 15, 23, 42; /* slate-900 */
+
+  --muted: 241, 245, 249; /* slate-100 */
+  --muted-foreground: 100, 116, 139; /* slate-500 */
+
+  --destructive: 239, 68, 68; /* red-500 */
+  --destructive-foreground: 255, 255, 255;
+
+  --border: 226, 232, 240; /* slate-200 */
+  --input: 226, 232, 240; /* slate-200 */
+  --ring: 220, 38, 38; /* red-600 */
+
+  --radius: 0.5rem;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+@layer base {
+  /* Custom scrollbar for the whole app */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(241, 245, 249); /* slate-100 */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(203, 213, 225); /* slate-300 */
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(148, 163, 184); /* slate-400 */
+  }
+
+  /* Add battle theme styles */
+  .battle-gradient {
+    background: linear-gradient(135deg, rgb(251, 191, 36), rgb(220, 38, 38));
+  }
+
+  .battle-card {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .battle-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.1);
+  }
+
+  /* Custom prose for markdown content */
+  .prose pre {
+    background-color: rgb(241, 245, 249); /* slate-100 */
+    border-radius: 0.375rem;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .prose code {
+    background-color: rgb(241, 245, 249); /* slate-100 */
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.25rem;
+    font-size: 0.875rem;
+  }
+
+  .prose pre code {
+    background-color: transparent;
+    padding: 0;
+  }
+}
+
+@layer components {
+  /* Custom form styling */
+  .form-input {
+    @apply w-full border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 mb-1;
+  }
+
+  /* Battle animations */
+  @keyframes pulse-battle {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  .battle-pulse {
+    animation: pulse-battle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
