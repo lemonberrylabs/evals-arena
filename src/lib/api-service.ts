@@ -1,63 +1,36 @@
-import { BattleSetup, ModelResponse, JudgeEvaluation, Provider, ApiConfig} from '@/types';
+import { BattleSetup, ModelResponse, JudgeEvaluation, Provider} from '@/types';
 import {getModelById} from '@/config/models';
 import {env} from '@/config/env';
 import OpenAI from 'openai';
 
-function createLLMClient(provider: Provider) {
-    switch (provider) {
-        case Provider.OPENAI:
-            if (!env.openaiApiKey) throw new Error('OpenAI API key not configured');
-            return new OpenAI({
-                apiKey: env.openaiApiKey,
-                dangerouslyAllowBrowser: true // Allow browser usage - warning: this exposes API keys in frontend code
-            });
+// Example client-side code to call the proxy API
+async function callLLMAPI(model: string, messages: any[], endpoint?: string, apiKey?: string) {
+    try {
+        const response = await fetch('/api/llm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model,
+                messages,
+                endpoint,
+                apiKey
+            }),
+        });
 
-        // For demo purposes, we'll use the OpenAI client for all providers
-        // In a real implementation, you would use the appropriate client for each provider
-        case Provider.ANTHROPIC:
-            if (!env.anthropicApiKey) throw new Error('Anthropic API key not configured');
-            return new OpenAI({
-                apiKey: env.anthropicApiKey,
-                baseURL: 'https://api.anthropic.com/v1',
-                dangerouslyAllowBrowser: true
-            });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'API request failed');
+        }
 
-        case Provider.GOOGLE:
-            if (!env.googleApiKey) throw new Error('Google API key not configured');
-            return new OpenAI({
-                apiKey: env.googleApiKey,
-                baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
-                dangerouslyAllowBrowser: true
-            });
-
-        case Provider.MISTRAL:
-            if (!env.mistralApiKey) throw new Error('Mistral API key not configured');
-            return new OpenAI({
-                apiKey: env.mistralApiKey,
-                baseURL: 'https://api.mistral.ai/v1',
-                dangerouslyAllowBrowser: true
-            });
-
-        case Provider.COHERE:
-            if (!env.cohereApiKey) throw new Error('Cohere API key not configured');
-            return new OpenAI({
-                apiKey: env.cohereApiKey,
-                baseURL: 'https://api.cohere.ai/compatibility/v1',
-                dangerouslyAllowBrowser: true
-            });
-
-        case Provider.LLAMA:
-            if (!env.llamaApiKey) throw new Error('Llama API key not configured');
-            return new OpenAI({
-                apiKey: env.llamaApiKey,
-                baseURL: 'https://api.llama-api.com',
-                dangerouslyAllowBrowser: true
-            });
-
-        default:
-            throw new Error(`Unsupported provider: ${provider}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error calling LLM API:', error);
+        throw error;
     }
 }
+
 
 /**
  * Generates a model response for a given prompt
@@ -76,24 +49,49 @@ export async function generateModelResponse(
     const startTime = Date.now();
 
     try {
-        const client = createLLMClient(provider);
+        // Determine endpoint and API key based on provider
+        let endpoint = undefined;
+        let apiKey = undefined;
 
-        // For demo purposes, all requests go through OpenAI-like interface
-        // In a real implementation, you would use the appropriate client API for each provider
-        const completion = await client.chat.completions.create({
-            model: modelId,
-            messages: [
-                {
-                    role: 'system',
-                    content: developerPrompt || 'You are a helpful assistant.'
-                },
-                {
-                    role: 'user',
-                    content: userPrompt
-                }
-            ],
-            temperature: 0.7,
-        });
+        switch (provider) {
+            case Provider.OPENAI:
+                apiKey = env.openaiApiKey;
+                break;
+            case Provider.ANTHROPIC:
+                endpoint = 'https://api.anthropic.com/v1';
+                apiKey = env.anthropicApiKey;
+                break;
+            case Provider.GOOGLE:
+                endpoint = 'https://generativelanguage.googleapis.com/v1beta/openai';
+                apiKey = env.googleApiKey;
+                break;
+            case Provider.MISTRAL:
+                endpoint = 'https://api.mistral.ai/v1';
+                apiKey = env.mistralApiKey;
+                break;
+            case Provider.COHERE:
+                endpoint = 'https://api.cohere.ai/compatibility/v1';
+                apiKey = env.cohereApiKey;
+                break;
+            case Provider.LLAMA:
+                endpoint = 'https://api.llama-api.com';
+                apiKey = env.llamaApiKey;
+                break;
+        }
+
+        const messages = [
+            {
+                role: 'system',
+                content: developerPrompt || 'You are a helpful assistant.'
+            },
+            {
+                role: 'user',
+                content: userPrompt
+            }
+        ];
+
+        // Call the proxy API
+        const completion = await callLLMAPI(modelId, messages, endpoint, apiKey);
 
         const endTime = Date.now();
         const responseTime = endTime - startTime;
@@ -136,6 +134,7 @@ export async function judgeResponses(
     }
 
     try {
+
         const client = new OpenAI({
             apiKey: env.openaiApiKey,
             dangerouslyAllowBrowser: true // Allow browser usage

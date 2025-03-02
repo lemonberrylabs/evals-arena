@@ -34,27 +34,28 @@ export const availableModels: Model[] = [
 
     // Anthropic Models
     {
-        id: "claude-3-opus",
-        name: "Claude 3 Opus",
+        id: "claude-3-5-haiku-20241022",
+        name: "Claude 3.5 Haiku",
         provider: Provider.ANTHROPIC,
         description: "Anthropic's most powerful model with advanced reasoning and comprehension.",
         capabilities: ["text generation", "reasoning", "coding", "analysis"],
         enabled: true,
     },
     {
-        id: "claude-3-sonnet",
-        name: "Claude 3 Sonnet",
+        id: "claude-3-7-sonnet-20250219",
+        name: "Claude 3.7 Sonnet",
         provider: Provider.ANTHROPIC,
         description: "A balanced model offering strong performance with lower latency.",
         capabilities: ["text generation", "reasoning", "coding"],
         enabled: true,
     },
+
     {
-        id: "claude-3-haiku",
-        name: "Claude 3 Haiku",
+        id: "claude-3-5-sonnet-20241022",
+        name: "Claude 3.5 Sonnet",
         provider: Provider.ANTHROPIC,
-        description: "Fast and efficient model for simpler tasks.",
-        capabilities: ["text generation", "chat", "summarization"],
+        description: "A balanced model offering strong performance with lower latency.",
+        capabilities: ["text generation", "reasoning", "coding"],
         enabled: true,
     },
 
@@ -68,8 +69,8 @@ export const availableModels: Model[] = [
         enabled: true,
     },
     {
-        id: "gemini-1.5-flash",
-        name: "Gemini 1.5 Flash",
+        id: "gemini-2.0-flash",
+        name: "Gemini 2.0 Flash",
         provider: Provider.GOOGLE,
         description: "Faster version of Gemini optimized for efficiency.",
         capabilities: ["text generation", "chat"],
