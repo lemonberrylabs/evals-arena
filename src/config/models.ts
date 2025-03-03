@@ -133,6 +133,15 @@ const availableModels: Model[] = [
   },
 ]
 
+export const endpoints: Record<Provider, string> = {
+  [Provider.OPENAI]: 'https://api.openai.com/v1',
+  [Provider.ANTHROPIC]: 'https://api.anthropic.com/v1',
+  [Provider.GOOGLE]: 'https://generativelanguage.googleapis.com/v1beta/openai',
+  [Provider.MISTRAL]: 'https://api.mistral.ai/v1',
+  [Provider.COHERE]: 'https://api.cohere.ai/compatibility/v1',
+  [Provider.LLAMA]: 'https://api.llama-api.com',
+}
+
 /**
  * Get models filtered by enabled status and provider
  */

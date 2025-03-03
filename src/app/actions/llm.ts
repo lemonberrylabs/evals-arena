@@ -1,7 +1,7 @@
 'use server'
 
 import { env } from '@/config/env'
-import { getModelById } from '@/config/models'
+import { endpoints, getModelById } from '@/config/models'
 import { BattleSetup, JudgeEvaluation, ModelResponse, Provider } from '@/types'
 import OpenAI from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
@@ -22,8 +22,6 @@ export async function generateModelResponse(
   const provider = model.provider
   const startTime = Date.now()
 
-  const { endpoint, apiKey } = getApiConfig(provider)
-
   const messages: ChatCompletionMessageParam[] = [
     {
       role: 'system',
@@ -37,12 +35,7 @@ export async function generateModelResponse(
 
   try {
     // Call the proxy API
-    const completion = await callLLMAPI({
-      modelId,
-      messages,
-      endpoint,
-      apiKey,
-    })
+    const completion = await callLLMAPI({ modelId, messages })
 
     const endTime = Date.now()
     const responseTime = endTime - startTime
@@ -53,11 +46,13 @@ export async function generateModelResponse(
       provider,
       response: completion.choices[0]?.message.content || 'No response generated',
       responseTime,
-      tokenUsage: {
-        input: completion.usage?.prompt_tokens || 0,
-        output: completion.usage?.completion_tokens || 0,
-        total: completion.usage?.total_tokens || 0,
-      },
+      tokenUsage: completion.usage
+        ? {
+            input: completion.usage.prompt_tokens,
+            output: completion.usage.completion_tokens,
+            total: completion.usage.total_tokens,
+          }
+        : undefined,
     }
   } catch (error) {
     console.error(`Error generating response from ${model.name}:`, error)
@@ -70,6 +65,7 @@ export async function generateModelResponse(
       provider,
       response: `Error: ${errorMessage}`,
       responseTime: Date.now() - startTime,
+      error: errorMessage,
     }
   }
 }
@@ -85,11 +81,10 @@ export async function judgeResponses(
     throw new Error('OpenAI API key required for judging')
   }
 
+  const successResponses = modelResponses.filter((resp) => !resp.error)
+
   try {
-    const client = new OpenAI({
-      apiKey: env.openaiApiKey,
-      dangerouslyAllowBrowser: true, // Allow browser usage
-    })
+    const client = clientForModelId(env.judgeModel)
 
     // Construct the judging prompt
     const judgingPrompt = `
@@ -103,7 +98,7 @@ export async function judgeResponses(
   
   ## Model Responses to Evaluate
   
-  ${modelResponses
+  ${successResponses
     .map(
       (resp, index) => `
   ### Model ${index + 1}: ${resp.modelName}
@@ -121,7 +116,7 @@ export async function judgeResponses(
   Be fair and objective in your evaluation.
   
   # Output Format
-  Return a JSON array with each model evaluation in this format:
+  Return a JSON array with each model evaluation in this format, even if there is only one model:
   [
     {
       "modelId": "model-id-1",
@@ -155,14 +150,14 @@ export async function judgeResponses(
     try {
       // Extract the JSON array from the response
       const json = JSON.parse(responseText)
-      const results = Array.isArray(json) ? json : json.evaluations || []
+      const results = Array.isArray(json) ? json : json.evaluations ? json.evaluations : json.modelId ? [json] : []
 
       console.log('Final evaluations:', results)
       return results
     } catch (e) {
       console.error('Error parsing judge response:', e)
       // Create default evaluations as fallback
-      const defaultEvaluations = modelResponses.map((response) => ({
+      const defaultEvaluations = successResponses.map((response) => ({
         modelId: response.modelId,
         score: 50,
         reasoning: 'Error processing judge response. Default evaluation provided.',
@@ -177,61 +172,60 @@ export async function judgeResponses(
   }
 }
 
-async function callLLMAPI(params: {
-  modelId: string
-  messages: ChatCompletionMessageParam[]
-  apiKey: string
-  endpoint: string
-}) {
-  const { modelId, messages, endpoint, apiKey } = params
+async function callLLMAPI(params: { modelId: string; messages: ChatCompletionMessageParam[] }) {
+  const { modelId, messages } = params
 
-  if (!apiKey) {
-    throw new Error('No API key provided')
-  }
+  const client = clientForModelId(modelId)
 
-  const openai = new OpenAI({
-    apiKey,
-    baseURL: endpoint,
-  })
-
-  const completion = await openai.chat.completions.create({
+  return await client.chat.completions.create({
     model: modelId,
     messages,
   })
+}
 
-  return completion
+function clientForModelId(modelId: string) {
+  const model = getModelById(modelId)
+  if (!model) {
+    throw new Error(`Model not found: ${modelId}`)
+  }
+
+  const { endpoint, apiKey } = getApiConfig(model.provider)
+  return new OpenAI({
+    apiKey,
+    baseURL: endpoint,
+  })
 }
 
 function getApiConfig(provider: Provider) {
   switch (provider) {
     case Provider.OPENAI:
       return {
-        endpoint: 'https://api.openai.com/v1',
+        endpoint: endpoints[Provider.OPENAI],
         apiKey: env.openaiApiKey,
       }
     case Provider.ANTHROPIC:
       return {
-        endpoint: 'https://api.anthropic.com/v1',
+        endpoint: endpoints[Provider.ANTHROPIC],
         apiKey: env.anthropicApiKey,
       }
     case Provider.GOOGLE:
       return {
-        endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai',
+        endpoint: endpoints[Provider.GOOGLE],
         apiKey: env.googleApiKey,
       }
     case Provider.MISTRAL:
       return {
-        endpoint: 'https://api.mistral.ai/v1',
+        endpoint: endpoints[Provider.MISTRAL],
         apiKey: env.mistralApiKey,
       }
     case Provider.COHERE:
       return {
-        endpoint: 'https://api.cohere.ai/compatibility/v1',
+        endpoint: endpoints[Provider.COHERE],
         apiKey: env.cohereApiKey,
       }
     case Provider.LLAMA:
       return {
-        endpoint: 'https://api.llama-api.com',
+        endpoint: endpoints[Provider.LLAMA],
         apiKey: env.llamaApiKey,
       }
   }

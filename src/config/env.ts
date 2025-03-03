@@ -16,7 +16,7 @@ export const env = {
   // Get the list of enabled providers from env or default to OpenAI
   get enabledProviders(): Provider[] {
     if (!process.env.NEXT_PUBLIC_ENABLED_PROVIDERS) {
-      return [Provider.OPENAI]
+      throw new Error('NEXT_PUBLIC_ENABLED_PROVIDERS is not set')
     }
 
     return process.env.NEXT_PUBLIC_ENABLED_PROVIDERS.split(',')

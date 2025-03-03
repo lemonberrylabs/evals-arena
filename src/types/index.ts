@@ -53,6 +53,7 @@ export interface ModelResponse {
     output: number
     total: number
   }
+  error?: string
 }
 
 // Judge's evaluation result for a single model
