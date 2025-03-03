@@ -178,7 +178,7 @@ export function BattleForm({ onSubmit, isLoading }: BattleFormProps) {
       {/* Errors and Submit Button */}
       <div className="flex items-center justify-between">
         <div>{errors.selectedModels && <p className="text-sm text-red-500">{errors.selectedModels.message}</p>}</div>
-        <Button type="submit" variant="arena" size="lg" disabled={isLoading}>
+        <Button type="submit" variant="arena" size="lg" disabled={isLoading} enabled={selectedModels.length > 1}>
           {isLoading ? 'Preparing Battle...' : `Battle ${selectedModels.length || ''} Models`}
         </Button>
       </div>

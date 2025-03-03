@@ -35,11 +35,19 @@ const buttonVariants = cva(
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  enabled?: boolean
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
-    return <button className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+  ({ className, variant, size, enabled = true, ...props }, ref) => {
+    const disabled = !enabled
+    let buttonClass = cn(buttonVariants({ variant, size, className }))
+
+    if (disabled) {
+      buttonClass = cn(buttonClass, 'opacity-50 cursor-not-allowed')
+    }
+
+    return <button className={buttonClass} ref={ref} {...props} />
   }
 )
 
