@@ -17,6 +17,8 @@ export function BattleResults({ battleResult, onReset }: BattleResultsProps) {
     // Using evaluation instead of eval to avoid reserved word
     const scoreA = judgeEvaluation.find((evaluation) => evaluation.modelId === a.modelId)?.score || 0
     const scoreB = judgeEvaluation.find((evaluation) => evaluation.modelId === b.modelId)?.score || 0
+    console.log('scoreA', scoreA, 'scoreB', scoreB)
+
     return scoreB - scoreA
   })
 

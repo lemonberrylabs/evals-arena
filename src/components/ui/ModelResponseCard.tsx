@@ -1,4 +1,4 @@
-import { formatResponseTime, getProviderBgColor } from '@/lib/utils'
+import { cn, formatResponseTime, getProviderBgColor } from '@/lib/utils'
 import { JudgeEvaluation, ModelResponse } from '@/types'
 import { Award, CheckCircle2, ChevronsDown, ChevronsUp, Clock, Copy } from 'lucide-react'
 
@@ -23,15 +23,24 @@ export function ModelResponseCard({ modelResponse, judgeEvaluation, isWinner = f
     setTimeout(() => setCopied(false), 2000)
   }
 
+  const isError = !!modelResponse.error
+
   return (
     <div
-      className={`
-      border rounded-lg overflow-hidden transition-all
-      ${isWinner ? 'border-amber-500 shadow-md shadow-amber-100' : 'border-gray-200'}
-    `}
+      className={cn(
+        'border rounded-lg overflow-hidden transition-all border-gray-200',
+        isWinner ? 'border-amber-500 shadow-md shadow-amber-100' : '',
+        isError ? 'border-red-500' : ''
+      )}
     >
       {/* Header */}
-      <div className={`p-4 ${isWinner ? 'bg-gradient-to-r from-amber-50 to-amber-100' : 'bg-white'}`}>
+      <div
+        className={cn(
+          'p-4',
+          isWinner ? 'bg-gradient-to-r from-amber-50 to-amber-100' : 'bg-white',
+          isError ? 'bg-red-50' : ''
+        )}
+      >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {rank && (

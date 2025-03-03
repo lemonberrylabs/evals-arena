@@ -81,7 +81,7 @@ export async function judgeResponses(
     throw new Error('OpenAI API key required for judging')
   }
 
-  const successResponses = modelResponses.filter((resp) => !resp.error)
+  const successResponses = modelResponses.filter((resp) => !!!resp.error)
 
   try {
     const client = clientForModelId(env.judgeModel)
@@ -150,7 +150,13 @@ export async function judgeResponses(
     try {
       // Extract the JSON array from the response
       const json = JSON.parse(responseText)
-      const results = Array.isArray(json) ? json : json.evaluations ? json.evaluations : json.modelId ? [json] : []
+      const results = Array.isArray(json)
+        ? json
+        : json.evaluations && Array.isArray(json.evaluations)
+          ? json.evaluations
+          : json.modelId && json.score && json.reasoning
+            ? [json]
+            : []
 
       console.log('Final evaluations:', results)
       return results
