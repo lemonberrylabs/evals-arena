@@ -112,6 +112,7 @@ export async function judgeResponses(
   # Instructions
   Evaluate each model's response based on the judging criteria.
   Assign a score from 0-100 for each model, with higher scores indicating better responses.
+  Better means more accurate, relevant, and engaging responses adhering to judge criteria.
   Provide brief reasoning for each score.
   Be fair and objective in your evaluation.
   
