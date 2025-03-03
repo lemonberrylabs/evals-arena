@@ -1,5 +1,7 @@
 # LLM Evals Arena
 
+[![CI](https://github.com/lemonberrylabs/evals-arena/actions/workflows/ci.yml/badge.svg)](https://github.com/lemonberrylabs/evals-arena/actions/workflows/ci.yml)
+
 An open-source platform for evaluating and comparing different language models in head-to-head battles.
 
 ![LLM Evals Arena Banner](https://via.placeholder.com/1200x300/FFB400/FFFFFF?text=LLM+Evals+Arena)
