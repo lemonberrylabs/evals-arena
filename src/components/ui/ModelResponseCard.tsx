@@ -9,9 +9,16 @@ interface ModelResponseCardProps {
   judgeEvaluation?: JudgeEvaluation
   isWinner?: boolean
   rank?: number
+  score?: number
 }
 
-export function ModelResponseCard({ modelResponse, judgeEvaluation, isWinner = false, rank }: ModelResponseCardProps) {
+export function ModelResponseCard({
+  modelResponse,
+  judgeEvaluation,
+  isWinner = false,
+  rank,
+  score,
+}: ModelResponseCardProps) {
   const [expanded, setExpanded] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -116,13 +123,16 @@ export function ModelResponseCard({ modelResponse, judgeEvaluation, isWinner = f
         )}
 
         {/* Token usage */}
-        {modelResponse.tokenUsage && (
-          <div className="mt-4 pt-2 border-t border-gray-200 flex gap-4 text-xs text-gray-500">
-            <span>Input: {modelResponse.tokenUsage.input} tokens</span>
-            <span>Output: {modelResponse.tokenUsage.output} tokens</span>
-            <span>Total: {modelResponse.tokenUsage.total} tokens</span>
-          </div>
-        )}
+        <div className="mt-4 pt-2 border-t border-gray-200 flex gap-4 text-xs text-gray-500">
+          <span>Score: {score || 0}/100</span>
+          {modelResponse.tokenUsage && (
+            <>
+              <span>Input: {modelResponse.tokenUsage.input} tokens</span>
+              <span>Output: {modelResponse.tokenUsage.output} tokens</span>
+              <span>Total: {modelResponse.tokenUsage.total} tokens</span>
+            </>
+          )}
+        </div>
       </div>
     </div>
   )

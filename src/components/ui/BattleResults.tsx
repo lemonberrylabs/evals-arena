@@ -12,20 +12,20 @@ interface BattleResultsProps {
 export function BattleResults({ battleResult, onReset }: BattleResultsProps) {
   const { timestamp, battleSetup, modelResponses, judgeEvaluation, winner } = battleResult
 
+  // Find evaluations for each model
+  const getEvaluation = (modelId: string, modelName: string): JudgeEvaluation | undefined => {
+    // the models may return the model name in the modelId field
+    return judgeEvaluation.find((evaluation) => evaluation.modelId === modelId || evaluation.modelId === modelName)
+  }
+
   // Sort responses by score (highest first)
   const sortedResponses = [...modelResponses].sort((a, b) => {
     // Using evaluation instead of eval to avoid reserved word
-    const scoreA = judgeEvaluation.find((evaluation) => evaluation.modelId === a.modelId)?.score || 0
-    const scoreB = judgeEvaluation.find((evaluation) => evaluation.modelId === b.modelId)?.score || 0
-    console.log('scoreA', scoreA, 'scoreB', scoreB)
+    const scoreA = getEvaluation(a.modelId, a.modelName)?.score || 0
+    const scoreB = getEvaluation(b.modelId, b.modelName)?.score || 0
 
     return scoreB - scoreA
   })
-
-  // Find evaluations for each model
-  const getEvaluation = (modelId: string): JudgeEvaluation | undefined => {
-    return judgeEvaluation.find((evaluation) => evaluation.modelId === modelId)
-  }
 
   return (
     <div className="space-y-6">
@@ -54,7 +54,7 @@ export function BattleResults({ battleResult, onReset }: BattleResultsProps) {
             Winner: {winner.modelName} ({winner.score}/100)
           </div>
           <p className="text-sm text-amber-800">
-            {getEvaluation(winner.modelName)?.reasoning || 'No reasoning provided'}
+            {getEvaluation(winner.modelId, winner.modelName)?.reasoning || 'No reasoning provided'}
           </p>
         </div>
       </div>
@@ -98,9 +98,10 @@ export function BattleResults({ battleResult, onReset }: BattleResultsProps) {
             <ModelResponseCard
               key={response.modelId}
               modelResponse={response}
-              judgeEvaluation={getEvaluation(response.modelId)}
+              judgeEvaluation={getEvaluation(response.modelId, response.modelName)}
               isWinner={response.modelId === winner.modelId}
               rank={index + 1}
+              score={getEvaluation(response.modelId, response.modelName)?.score || undefined}
             />
           ))}
         </div>
