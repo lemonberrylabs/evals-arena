@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @tailwind base;
 @tailwind components;
@@ -113,7 +113,8 @@ body {
 
   /* Battle animations */
   @keyframes pulse-battle {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 1;
     }
     50% {

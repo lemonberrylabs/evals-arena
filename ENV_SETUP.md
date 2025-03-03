@@ -32,6 +32,7 @@ NEXT_PUBLIC_JUDGE_MODEL=gpt-4o
 ## Required Variables
 
 At minimum, you need:
+
 1. At least one API key for any of the supported providers
 2. The corresponding provider(s) enabled in `NEXT_PUBLIC_ENABLED_PROVIDERS`
 
