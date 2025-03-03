@@ -1,7 +1,10 @@
 import { Header } from '@/components/ui/Header'
+import { Separator } from '@/components/ui/separator'
 import { isConfigured } from '@/config/actions'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Image from 'next/image'
+import Link from 'next/link'
 
 import ConfigRequired from './ConfigRequired'
 import './globals.css'
@@ -41,8 +44,14 @@ function Layout({ children }: { children: React.ReactNode }) {
               <p className="text-gray-400 text-sm">An open-source platform for comparing LLM performance</p>
             </div>
 
-            <div className="text-gray-400 text-sm">
-              <p>© {new Date().getFullYear()} Lemonberry Labs. MIT License.</p>
+            <div className="text-gray-400 text-sm flex items-center gap-2">
+              <span>&copy; {new Date().getFullYear()} Lemonberry Labs</span>
+              <Separator orientation="vertical" />
+              <Link href="https://lemonberrylabs.com" target="_blank" rel="noopener noreferrer">
+                <Image src="/lemonberry.ico" alt="Lemonberry Labs" width={20} height={20} />
+              </Link>
+              <Separator orientation="vertical" />
+              <span>All rights reserved.</span>
             </div>
           </div>
         </div>
