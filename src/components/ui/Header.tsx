@@ -1,3 +1,5 @@
+'use client'
+
 import { cn } from '@/lib/utils'
 import { Github, History, Sword } from 'lucide-react'
 import Link from 'next/link'
@@ -38,7 +40,7 @@ export function Header() {
             ))}
 
             <a
-              href="https://github.com/yourusername/llm-evals-arena"
+              href="https://github.com/lemonberrylabs/evals-arena"
               target="_blank"
               rel="noopener noreferrer"
               className="px-3 py-2 rounded-md text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white flex items-center"

@@ -27,7 +27,7 @@ An open-source platform for evaluating and comparing different language models i
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/llm-evals-arena.git
+git clone https://github.com/lemonberrylabs/evals-arena
 cd llm-evals-arena
 ```
 
@@ -44,7 +44,7 @@ yarn
 Create a `.env.local` file in the project root with your API keys (see [ENV_SETUP.md](ENV_SETUP.md) for details).
 
 ```
-NEXT_PUBLIC_OPENAI_API_KEY=your-openai-api-key
+OPENAI_API_KEY=your-openai-api-key
 NEXT_PUBLIC_ENABLED_PROVIDERS=openai
 ```
 
@@ -93,7 +93,7 @@ See [ENV_SETUP.md](ENV_SETUP.md) for complete details on configuring the applica
 
 This application is designed for local development and educational purposes. In its current state:
 
-- API keys are stored in environment variables with the `NEXT_PUBLIC_` prefix
+- API keys are stored in environment variables with the `` prefix
 - These keys are accessible in the client-side code
 - For production use, consider implementing a backend API gateway to proxy requests
 

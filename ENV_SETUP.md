@@ -14,19 +14,19 @@ Copy the template below and replace the placeholder values with your actual API 
 
 ```
 # API Keys for LLM providers
-NEXT_PUBLIC_OPENAI_API_KEY=your-openai-api-key
-NEXT_PUBLIC_ANTHROPIC_API_KEY=your-anthropic-api-key
-NEXT_PUBLIC_GOOGLE_API_KEY=your-google-api-key
-NEXT_PUBLIC_MISTRAL_API_KEY=your-mistral-api-key
-NEXT_PUBLIC_COHERE_API_KEY=your-cohere-api-key
-NEXT_PUBLIC_LLAMA_API_KEY=your-llama-api-key
+OPENAI_API_KEY=your-openai-api-key
+ANTHROPIC_API_KEY=your-anthropic-api-key
+GOOGLE_API_KEY=your-google-api-key
+MISTRAL_API_KEY=your-mistral-api-key
+COHERE_API_KEY=your-cohere-api-key
+LLAMA_API_KEY=your-llama-api-key
 
 # Enabled providers (comma-separated list)
 # Options: openai,anthropic,google,mistral,cohere,llama
 NEXT_PUBLIC_ENABLED_PROVIDERS=openai,anthropic
 
 # Judge model configuration
-NEXT_PUBLIC_JUDGE_MODEL=gpt-4o
+JUDGE_MODEL=gpt-4o
 ```
 
 ## Required Variables
@@ -35,14 +35,6 @@ At minimum, you need:
 
 1. At least one API key for any of the supported providers
 2. The corresponding provider(s) enabled in `NEXT_PUBLIC_ENABLED_PROVIDERS`
-
-## Security Note
-
-The variables are prefixed with `NEXT_PUBLIC_` because they are accessed from the client-side code. In a production environment, you should:
-
-1. Use a backend service to handle API requests
-2. Keep sensitive keys on the server side only
-3. Consider using environment-specific variables (.env.development, .env.production)
 
 ## Getting API Keys
 

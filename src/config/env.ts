@@ -6,12 +6,12 @@ import { Provider } from '@/types'
  */
 export const env = {
   // API Keys
-  openaiApiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
-  anthropicApiKey: process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || '',
-  googleApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || '',
-  mistralApiKey: process.env.NEXT_PUBLIC_MISTRAL_API_KEY || '',
-  cohereApiKey: process.env.NEXT_PUBLIC_COHERE_API_KEY || '',
-  llamaApiKey: process.env.NEXT_PUBLIC_LLAMA_API_KEY || '',
+  openaiApiKey: process.env.OPENAI_API_KEY || '',
+  anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
+  googleApiKey: process.env.GOOGLE_API_KEY || '',
+  mistralApiKey: process.env.MISTRAL_API_KEY || '',
+  cohereApiKey: process.env.COHERE_API_KEY || '',
+  llamaApiKey: process.env.LLAMA_API_KEY || '',
 
   // Get the list of enabled providers from env or default to OpenAI
   get enabledProviders(): Provider[] {
@@ -26,7 +26,7 @@ export const env = {
   },
 
   // Judge model
-  judgeModel: process.env.NEXT_PUBLIC_JUDGE_MODEL || 'gpt-4o',
+  judgeModel: process.env.JUDGE_MODEL || 'gpt-4o',
 
   // Check if we have at least one valid API key
   get isConfigured(): boolean {
@@ -38,18 +38,5 @@ export const env = {
     const hasLlama = !!this.llamaApiKey && this.enabledProviders.includes(Provider.LLAMA)
 
     return hasOpenAI || hasAnthropic || hasGoogle || hasMistral || hasCohere || hasLlama
-  },
-
-  // Get API config object
-  get apiConfig() {
-    return {
-      openaiApiKey: this.openaiApiKey,
-      anthropicApiKey: this.anthropicApiKey,
-      googleApiKey: this.googleApiKey,
-      mistralApiKey: this.mistralApiKey,
-      cohereApiKey: this.cohereApiKey,
-      llamaApiKey: this.llamaApiKey,
-      enabledProviders: this.enabledProviders,
-    }
   },
 }

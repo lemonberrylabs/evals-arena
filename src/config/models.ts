@@ -1,5 +1,6 @@
-import { env } from '@/config/env'
 import { Model, Provider } from '@/types'
+
+import { env } from './env'
 
 /**
  * Available models for the LLM Evals Arena
@@ -136,12 +137,14 @@ const availableModels: Model[] = [
  * Get models filtered by enabled status and provider
  */
 export function getEnabledModels(): Model[] {
-  return availableModels.filter((model) => model.enabled && env.enabledProviders.includes(model.provider))
+  const enabledProviders = new Set(env.enabledProviders)
+  return availableModels.filter((model) => model.enabled && enabledProviders.has(model.provider))
 }
 
 /**
  * Get a model by its ID
  */
 export function getModelById(modelId: string): Model | undefined {
-  return availableModels.find((model) => model.id === modelId)
+  const enabledModels = getEnabledModels()
+  return enabledModels.find((model) => model.id === modelId)
 }

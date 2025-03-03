@@ -26,22 +26,6 @@ export function formatDate(timestamp: number): string {
 }
 
 /**
- * Get a provider-specific color
- */
-export function getProviderColor(provider: string): string {
-  const colorMap: Record<string, string> = {
-    openai: 'text-green-500',
-    anthropic: 'text-purple-500',
-    google: 'text-blue-500',
-    mistral: 'text-cyan-500',
-    cohere: 'text-yellow-500',
-    llama: 'text-orange-500',
-  }
-
-  return colorMap[provider.toLowerCase()] || 'text-gray-500'
-}
-
-/**
  * Get a provider-specific background color
  */
 export function getProviderBgColor(provider: string): string {
