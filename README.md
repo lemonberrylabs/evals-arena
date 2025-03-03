@@ -19,7 +19,7 @@ An open-source platform for evaluating and comparing different language models i
 ### Prerequisites
 
 - Node.js 18.x or higher
-- npm or yarn
+- yarn
 - API keys for at least one of the supported LLM providers
 
 ### Installation
@@ -34,9 +34,7 @@ cd llm-evals-arena
 2. Install dependencies:
 
 ```bash
-npm install
-# or
-yarn
+yarn install
 ```
 
 3. Set up your environment variables:
@@ -51,8 +49,6 @@ NEXT_PUBLIC_ENABLED_PROVIDERS=openai
 4. Start the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
