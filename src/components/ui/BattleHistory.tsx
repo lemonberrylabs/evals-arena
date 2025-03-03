@@ -72,7 +72,11 @@ export function BattleHistory({ onSelectBattle }: BattleHistoryProps) {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredBattles.map((battle) => (
-              <tr key={battle.id} className="hover:bg-gray-50">
+              <tr
+                key={battle.id}
+                className="hover:bg-gray-50 hover:cursor-pointer"
+                onClick={() => onSelectBattle(battle)}
+              >
                 <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex items-center gap-1">
                     <Clock size={14} />
