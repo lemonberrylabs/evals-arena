@@ -5,10 +5,9 @@ import OpenAI from 'openai'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { model, messages, endpoint, apiKey } = body
+    const { modelId, messages, endpoint, apiKey } = body
 
-    // Use the provided API key or fall back to environment variable
-    const key = apiKey || process.env.OPENAI_API_KEY
+    const key = apiKey
 
     if (!key) {
       return NextResponse.json({ error: 'No API key provided' }, { status: 400 })
@@ -16,12 +15,12 @@ export async function POST(request: NextRequest) {
 
     const openai = new OpenAI({
       apiKey: key,
-      baseURL: endpoint || undefined, // Use custom endpoint if provided
+      baseURL: endpoint,
       dangerouslyAllowBrowser: false, // Not needed in server context
     })
 
     const completion = await openai.chat.completions.create({
-      model,
+      model: modelId,
       messages,
     })
 

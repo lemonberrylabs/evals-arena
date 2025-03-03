@@ -4,24 +4,19 @@ import { BattleSetup, ModelResponse, JudgeEvaluation, Provider } from '@/types'
 import OpenAI from 'openai'
 
 // Example client-side code to call the proxy API
-async function callLLMAPI(
-  model: string,
-  messages: { role: string; content: string }[],
-  endpoint?: string,
-  apiKey?: string
-) {
+async function callLLMAPI(params: {
+  modelId: string
+  messages: { role: string; content: string }[]
+  apiKey: string
+  endpoint: string
+}) {
   try {
     const response = await fetch('/api/llm', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model,
-        messages,
-        endpoint,
-        apiKey,
-      }),
+      body: JSON.stringify(params),
     })
 
     if (!response.ok) {
@@ -52,50 +47,27 @@ async function generateModelResponse(
   const provider = model.provider
   const startTime = Date.now()
 
+  const { endpoint, apiKey } = getApiConfig(provider)
+
+  const messages = [
+    {
+      role: 'system',
+      content: developerPrompt || 'You are a helpful assistant.',
+    },
+    {
+      role: 'user',
+      content: userPrompt,
+    },
+  ]
+
   try {
-    // Determine endpoint and API key based on provider
-    let endpoint = undefined
-    let apiKey = undefined
-
-    switch (provider) {
-      case Provider.OPENAI:
-        apiKey = env.openaiApiKey
-        break
-      case Provider.ANTHROPIC:
-        endpoint = 'https://api.anthropic.com/v1'
-        apiKey = env.anthropicApiKey
-        break
-      case Provider.GOOGLE:
-        endpoint = 'https://generativelanguage.googleapis.com/v1beta/openai'
-        apiKey = env.googleApiKey
-        break
-      case Provider.MISTRAL:
-        endpoint = 'https://api.mistral.ai/v1'
-        apiKey = env.mistralApiKey
-        break
-      case Provider.COHERE:
-        endpoint = 'https://api.cohere.ai/compatibility/v1'
-        apiKey = env.cohereApiKey
-        break
-      case Provider.LLAMA:
-        endpoint = 'https://api.llama-api.com'
-        apiKey = env.llamaApiKey
-        break
-    }
-
-    const messages = [
-      {
-        role: 'system',
-        content: developerPrompt || 'You are a helpful assistant.',
-      },
-      {
-        role: 'user',
-        content: userPrompt,
-      },
-    ]
-
     // Call the proxy API
-    const completion = await callLLMAPI(modelId, messages, endpoint, apiKey)
+    const completion = await callLLMAPI({
+      modelId,
+      messages,
+      endpoint,
+      apiKey,
+    })
 
     const endTime = Date.now()
     const responseTime = endTime - startTime
@@ -290,5 +262,40 @@ export async function runBattle(
     const msg = error instanceof Error ? error.message : 'Unknown error'
     console.error('Error running battle:', msg)
     throw new Error(`Battle error: ${msg}`)
+  }
+}
+
+function getApiConfig(provider: Provider) {
+  switch (provider) {
+    case Provider.OPENAI:
+      return {
+        endpoint: 'https://api.openai.com/v1',
+        apiKey: env.openaiApiKey,
+      }
+    case Provider.ANTHROPIC:
+      return {
+        endpoint: 'https://api.anthropic.com/v1',
+        apiKey: env.anthropicApiKey,
+      }
+    case Provider.GOOGLE:
+      return {
+        endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai',
+        apiKey: env.googleApiKey,
+      }
+    case Provider.MISTRAL:
+      return {
+        endpoint: 'https://api.mistral.ai/v1',
+        apiKey: env.mistralApiKey,
+      }
+    case Provider.COHERE:
+      return {
+        endpoint: 'https://api.cohere.ai/compatibility/v1',
+        apiKey: env.cohereApiKey,
+      }
+    case Provider.LLAMA:
+      return {
+        endpoint: 'https://api.llama-api.com',
+        apiKey: env.llamaApiKey,
+      }
   }
 }
