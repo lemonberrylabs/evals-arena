@@ -22,7 +22,7 @@ export function Layout({ children }: LayoutProps) {
             </div>
 
             <div className="text-gray-400 text-sm">
-              <p>© {new Date().getFullYear()} LLM Evals Arena. MIT License.</p>
+              <p>© {new Date().getFullYear()} Lemonberry Labs. MIT License.</p>
             </div>
           </div>
         </div>
