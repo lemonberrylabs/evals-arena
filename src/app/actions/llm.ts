@@ -225,11 +225,6 @@ function getApiConfig(provider: Provider) {
         endpoint: endpoints[Provider.MISTRAL],
         apiKey: env.mistralApiKey,
       }
-    case Provider.COHERE:
-      return {
-        endpoint: endpoints[Provider.COHERE],
-        apiKey: env.cohereApiKey,
-      }
     case Provider.LLAMA:
       return {
         endpoint: endpoints[Provider.LLAMA],

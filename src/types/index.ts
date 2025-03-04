@@ -8,7 +8,6 @@ export enum Provider {
   ANTHROPIC = 'anthropic',
   GOOGLE = 'google',
   MISTRAL = 'mistral',
-  COHERE = 'cohere',
   LLAMA = 'llama',
 }
 

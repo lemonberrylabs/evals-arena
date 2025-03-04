@@ -18,11 +18,10 @@ OPENAI_API_KEY=your-openai-api-key
 ANTHROPIC_API_KEY=your-anthropic-api-key
 GOOGLE_API_KEY=your-google-api-key
 MISTRAL_API_KEY=your-mistral-api-key
-COHERE_API_KEY=your-cohere-api-key
 LLAMA_API_KEY=your-llama-api-key
 
 # Enabled providers (comma-separated list)
-# Options: openai,anthropic,google,mistral,cohere,llama
+# Options: openai,anthropic,google,mistral,llama
 NEXT_PUBLIC_ENABLED_PROVIDERS=openai,anthropic
 
 # Judge model configuration
@@ -42,8 +41,7 @@ At minimum, you need:
 - **Anthropic**: [https://console.anthropic.com/](https://console.anthropic.com/)
 - **Google (Gemini)**: [https://ai.google.dev/](https://ai.google.dev/)
 - **Mistral**: [https://console.mistral.ai/](https://console.mistral.ai/)
-- **Cohere**: [https://dashboard.cohere.com/api-keys](https://dashboard.cohere.com/api-keys)
-- **Llama**: Contact Meta AI for access
+- **Llama**: [https://console.llamaapi.com/en/dashboard](https://console.llamaapi.com/en/dashboard)
 
 ## Troubleshooting
 

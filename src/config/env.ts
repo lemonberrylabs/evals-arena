@@ -10,7 +10,6 @@ export const env = {
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
   googleApiKey: process.env.GOOGLE_API_KEY || '',
   mistralApiKey: process.env.MISTRAL_API_KEY || '',
-  cohereApiKey: process.env.COHERE_API_KEY || '',
   llamaApiKey: process.env.LLAMA_API_KEY || '',
 
   // Get the list of enabled providers from env or default to OpenAI
@@ -34,9 +33,8 @@ export const env = {
     const hasAnthropic = !!this.anthropicApiKey && this.enabledProviders.includes(Provider.ANTHROPIC)
     const hasGoogle = !!this.googleApiKey && this.enabledProviders.includes(Provider.GOOGLE)
     const hasMistral = !!this.mistralApiKey && this.enabledProviders.includes(Provider.MISTRAL)
-    const hasCohere = !!this.cohereApiKey && this.enabledProviders.includes(Provider.COHERE)
     const hasLlama = !!this.llamaApiKey && this.enabledProviders.includes(Provider.LLAMA)
 
-    return hasOpenAI || hasAnthropic || hasGoogle || hasMistral || hasCohere || hasLlama
+    return hasOpenAI || hasAnthropic || hasGoogle || hasMistral || hasLlama
   },
 }

@@ -87,6 +87,11 @@ See [ENV_SETUP.md](ENV_SETUP.md) for complete details on configuring the applica
 - [Zod](https://github.com/colinhacks/zod) - Schema validation
 - [Lucide Icons](https://lucide.dev/) - Beautiful icons
 
+## Adding a custom LLM provider
+Right now it's editing a bunch of files, not hard, but not easy either.
+
+We will make it easier.
+
 ## Security Considerations
 
 This application is designed for local development and educational purposes. In its current state:
@@ -95,7 +100,6 @@ This application is designed for local development and educational purposes. In 
 - These keys are accessible in the client-side code
 - For production use, consider implementing a backend API gateway to proxy requests
 
-See [SECURITY.md](SECURITY.md) for more details and recommended production configurations.
 
 ## Contributing
 
@@ -115,4 +119,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Inspired by the need for better tools to compare LLM performance
 - Thanks to all the LLM providers for their amazing models
-- Built with ❤️ by the open-source community
+- Built with ❤️ by lemonberry labs for the open-source community

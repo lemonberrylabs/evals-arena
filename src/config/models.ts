@@ -104,16 +104,6 @@ const availableModels: Model[] = [
     enabled: true,
   },
 
-  // Cohere Models
-  {
-    id: 'cohere-command',
-    name: 'Cohere Command',
-    provider: Provider.COHERE,
-    description: "Cohere's powerful model for enterprise applications.",
-    capabilities: ['text generation', 'reasoning', 'enterprise'],
-    enabled: true,
-  },
-
   // Llama Models
   {
     id: 'llama-3-70b',
@@ -138,7 +128,6 @@ export const endpoints: Record<Provider, string> = {
   [Provider.ANTHROPIC]: 'https://api.anthropic.com/v1',
   [Provider.GOOGLE]: 'https://generativelanguage.googleapis.com/v1beta/openai',
   [Provider.MISTRAL]: 'https://api.mistral.ai/v1',
-  [Provider.COHERE]: 'https://api.cohere.ai/compatibility/v1',
   [Provider.LLAMA]: 'https://api.llama-api.com',
 }
 
