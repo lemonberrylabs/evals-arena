@@ -28,6 +28,9 @@ NEXT_PUBLIC_ENABLED_PROVIDERS=openai,anthropic
 JUDGE_MODEL=gpt-4o
 ```
 
+All environment variables are accessed in [`models.ts`](src/config/models.ts).
+Note that they are not prefixed with `NEXT_PUBLIC_` because they are not exposed to the client.
+
 ## Required Variables
 
 At minimum, you need:

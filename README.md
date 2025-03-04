@@ -20,7 +20,7 @@ An open-source platform for evaluating and comparing different language models i
 
 ### Prerequisites
 
-- Node.js 18.x or higher
+- Node.js 22.x or higher
 - yarn
 - API keys for at least one of the supported LLM providers
 
@@ -88,18 +88,28 @@ See [ENV_SETUP.md](ENV_SETUP.md) for complete details on configuring the applica
 - [Lucide Icons](https://lucide.dev/) - Beautiful icons
 
 ## Adding a custom LLM provider
-Right now it's editing a bunch of files, not hard, but not easy either.
 
-We will make it easier.
+**In [`src/config/models.ts`](src/config/models.ts)**:
+
+All of the configuration for supported providers should be centralized in [`src/config/models.ts`](src/config/models.ts). 
+If you are considering adding a new provider, make sure that no other files are affected.
+
+1. Add the provider to the `Provider` enum
+2. Add the provider config to the `configs` array and include at least one model config.
+3. Make sure to follow naming conventions.
+4. Update [README.md](README.md) and [ENV_SETUP.md](ENV_SETUP.md) to reflect the new provider.
+
+**Note**:
+
+Currently the code assumes that all providers support the OpenAI compatible API as we are using an `OpenAI` client implementation.
+If you are adding a provider that does not support the OpenAI compatible API, you you will need to abstract the API calls for all providers.
 
 ## Security Considerations
 
 This application is designed for local development and educational purposes. In its current state:
 
-- API keys are stored in environment variables with the `` prefix
-- These keys are accessible in the client-side code
+- API keys are stored in environment variables that are not exposed to the client
 - For production use, consider implementing a backend API gateway to proxy requests
-
 
 ## Contributing
 
