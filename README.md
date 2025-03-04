@@ -28,7 +28,7 @@ An open-source platform for evaluating and comparing different language models i
 
 ```bash
 git clone https://github.com/lemonberrylabs/evals-arena
-cd llm-evals-arena
+cd evals-arena
 ```
 
 2. Install dependencies:
