@@ -1,15 +1,12 @@
-import { Provider } from '@/config/models'
-import { ApiConfig, BattleResult } from '@/types'
+import { BattleResult } from '@/types'
 import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 interface ConfigState {
-  apiConfig: ApiConfig
   battleHistory: BattleResult[]
   isConfigured: boolean
 
   // Actions
-  updateApiConfig: (config: Partial<ApiConfig>) => void
   addBattleResult: (result: BattleResult) => void
   clearBattleHistory: () => void
   resetConfig: () => void
@@ -24,34 +21,8 @@ const isWindowUndefined = typeof window === 'undefined'
 export const useConfigStore = create<ConfigState>()(
   persist(
     (set) => ({
-      apiConfig: {
-        openaiApiKey: '',
-        anthropicApiKey: '',
-        googleApiKey: '',
-        mistralApiKey: '',
-        llamaApiKey: '',
-        enabledProviders: [Provider.OPENAI], // Default to OpenAI enabled
-      },
       battleHistory: [],
       isConfigured: false,
-
-      updateApiConfig: (config) =>
-        set((state) => {
-          const newConfig = {
-            ...state.apiConfig,
-            ...config,
-          }
-
-          // Automatically determine if the configuration is valid
-          const hasAnyKey = Object.entries(newConfig)
-            .filter(([key]) => key.includes('ApiKey'))
-            .some(([, value]) => value && value.length > 0)
-
-          return {
-            apiConfig: newConfig,
-            isConfigured: hasAnyKey && newConfig.enabledProviders.length > 0,
-          }
-        }),
 
       addBattleResult: (result) =>
         set((state) => ({
@@ -62,21 +33,12 @@ export const useConfigStore = create<ConfigState>()(
 
       resetConfig: () =>
         set({
-          apiConfig: {
-            openaiApiKey: '',
-            anthropicApiKey: '',
-            googleApiKey: '',
-            mistralApiKey: '',
-            llamaApiKey: '',
-            enabledProviders: [Provider.OPENAI],
-          },
           isConfigured: false,
         }),
     }),
     {
       name: 'llm-evals-arena-config',
       partialize: (state) => ({
-        apiConfig: state.apiConfig,
         battleHistory: state.battleHistory,
       }),
       storage: createJSONStorage(() => {

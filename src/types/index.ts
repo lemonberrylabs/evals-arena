@@ -12,17 +12,6 @@ export interface Model {
   enabled: boolean
 }
 
-// Configuration for API keys and enabled providers
-// TODO(ran) FIXME: fix this!
-export interface ApiConfig {
-  openaiApiKey?: string
-  anthropicApiKey?: string
-  googleApiKey?: string
-  mistralApiKey?: string
-  llamaApiKey?: string
-  enabledProviders: Provider[]
-}
-
 // Battle setup form data
 export interface BattleSetup {
   developerPrompt?: string
