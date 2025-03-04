@@ -10,7 +10,7 @@ export function Header() {
 
   const navigation = [
     { name: 'Arena', href: '/', icon: Sword },
-    { name: 'History', href: '/history', icon: History },
+    { name: 'History', href: '/history', icon: History }, // TODO: Clicking the history button the header should also go "back" when looking at a battle
   ]
 
   return (
