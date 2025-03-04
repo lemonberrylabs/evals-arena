@@ -191,10 +191,6 @@ class ProviderConfigs {
     {} as Record<Provider, OpenAI | null>
   )
 
-  apiConfig(provider: Provider): APIConfig {
-    return this.configByProvider[provider].apiConfig
-  }
-
   isConfigured(): boolean {
     return Object.values(this.configByProvider).some(
       (config) => !!config.apiConfig.apiKey && config.models.some((model) => model.enabled)
@@ -247,7 +243,7 @@ class ProviderConfigs {
     let client = this.clients[provider]
 
     if (!client) {
-      const apiConfig = this.apiConfig(provider)
+      const apiConfig = this.configByProvider[provider].apiConfig
       if (!apiConfig.apiKey) {
         throw new Error(`API key for provider ${provider} not found`)
       }
@@ -276,8 +272,6 @@ class ProviderConfigs {
 }
 
 export const providers = new ProviderConfigs()
-
-// TODO(ran) FIXME: go over all callsites, see what can be further simplified
 
 interface APIConfig {
   apiKey: string

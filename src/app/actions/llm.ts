@@ -18,9 +18,6 @@ export async function generateModelResponse(
   }
 
   const provider = providers.providerForModelId(modelId)
-  if (!provider) {
-    throw new Error(`Provider not found for model: ${modelId}`)
-  }
 
   const startTime = Date.now()
 
