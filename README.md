@@ -4,8 +4,6 @@
 
 An open-source platform for evaluating and comparing different language models in head-to-head battles.
 
-![LLM Evals Arena Banner](https://via.placeholder.com/1200x300/FFB400/FFFFFF?text=LLM+Evals+Arena)
-
 ## Features
 
 - **Battle Arena**: Test the same prompt across multiple LLM models simultaneously
