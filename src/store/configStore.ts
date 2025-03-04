@@ -1,4 +1,5 @@
-import { ApiConfig, Provider, BattleResult } from '@/types'
+import { Provider } from '@/config/models'
+import { ApiConfig, BattleResult } from '@/types'
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 

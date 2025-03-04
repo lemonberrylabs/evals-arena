@@ -26,24 +26,10 @@ export function formatDate(timestamp: number): string {
 }
 
 /**
- * Get a provider-specific background color
- */
-export function getProviderBgColor(provider: string): string {
-  const colorMap: Record<string, string> = {
-    openai: 'bg-green-100 text-green-800',
-    anthropic: 'bg-purple-100 text-purple-800',
-    google: 'bg-blue-100 text-blue-800',
-    mistral: 'bg-cyan-100 text-cyan-800',
-    llama: 'bg-orange-100 text-orange-800',
-  }
-
-  return colorMap[provider.toLowerCase()] || 'bg-gray-100 text-gray-800'
-}
-
-/**
  * Truncate text to a specified length
  */
 export function truncateText(text: string, maxLength: number = 100): string {
+  // TODO(ran) FIXME: replace with css
   if (text.length <= maxLength) return text
   return text.slice(0, maxLength) + '...'
 }

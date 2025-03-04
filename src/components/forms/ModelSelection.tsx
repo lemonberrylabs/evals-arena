@@ -1,8 +1,6 @@
-import { getEnabledModels } from '@/config/models'
-import { getProviderBgColor, cn } from '@/lib/utils'
+import { providers } from '@/config/models'
+import { cn } from '@/lib/utils'
 import { Model } from '@/types'
-
-import React from 'react'
 
 interface ModelSelectionProps {
   selectedModels: string[]
@@ -11,7 +9,7 @@ interface ModelSelectionProps {
 
 export function ModelSelection({ selectedModels, onChange }: ModelSelectionProps) {
   // Get all enabled models based on the environment configuration
-  const enabledModels = getEnabledModels()
+  const enabledModels = providers.enabledModels()
 
   const toggleModel = (modelId: string) => {
     if (selectedModels.includes(modelId)) {
@@ -57,7 +55,7 @@ interface ModelCardProps {
 }
 
 function ModelCard({ model, isSelected, onToggle }: ModelCardProps) {
-  const providerClass = getProviderBgColor(model.provider)
+  const providerClass = providers.style(model.id)
 
   return (
     <div
@@ -69,7 +67,9 @@ function ModelCard({ model, isSelected, onToggle }: ModelCardProps) {
     >
       <div className="flex justify-between items-start mb-2">
         <h4 className="font-medium">{model.name}</h4>
-        <span className={cn('text-xs px-2 py-1 rounded-full', providerClass)}>{model.provider}</span>
+        <span className={cn('text-xs px-2 py-1 rounded-full', providerClass)}>
+          {providers.providerForModelId(model.id)}
+        </span>
       </div>
 
       <p className="text-sm text-gray-600 mb-2 line-clamp-2">{model.description}</p>

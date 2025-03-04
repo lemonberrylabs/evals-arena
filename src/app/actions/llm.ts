@@ -1,9 +1,7 @@
 'use server'
 
-import { env } from '@/config/env'
-import { endpoints, getModelById } from '@/config/models'
-import { BattleSetup, JudgeEvaluation, ModelResponse, Provider } from '@/types'
-import OpenAI from 'openai'
+import { providers } from '@/config/models'
+import { BattleSetup, JudgeEvaluation, ModelResponse } from '@/types'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
 
 /**
@@ -14,12 +12,16 @@ export async function generateModelResponse(
   developerPrompt: string,
   userPrompt: string
 ): Promise<ModelResponse> {
-  const model = getModelById(modelId)
+  const model = providers.modelById(modelId)
   if (!model) {
     throw new Error(`Model not found: ${modelId}`)
   }
 
-  const provider = model.provider
+  const provider = providers.providerForModelId(modelId)
+  if (!provider) {
+    throw new Error(`Provider not found for model: ${modelId}`)
+  }
+
   const startTime = Date.now()
 
   const messages: ChatCompletionMessageParam[] = [
@@ -77,14 +79,10 @@ export async function judgeResponses(
   battleSetup: BattleSetup,
   modelResponses: ModelResponse[]
 ): Promise<JudgeEvaluation[]> {
-  if (!env.openaiApiKey) {
-    throw new Error('OpenAI API key required for judging')
-  }
-
   const successResponses = modelResponses.filter((resp) => !!!resp.error)
 
   try {
-    const client = clientForModelId(env.judgeModel)
+    const { client, model: judgeModel } = providers.judge()
 
     // Construct the judging prompt
     const judgingPrompt = `
@@ -129,7 +127,7 @@ export async function judgeResponses(
   `
 
     const completion = await client.chat.completions.create({
-      model: env.judgeModel,
+      model: judgeModel.id,
       messages: [
         {
           role: 'system',
@@ -182,53 +180,10 @@ export async function judgeResponses(
 async function callLLMAPI(params: { modelId: string; messages: ChatCompletionMessageParam[] }) {
   const { modelId, messages } = params
 
-  const client = clientForModelId(modelId)
+  const client = providers.clientForModelId(modelId)
 
   return await client.chat.completions.create({
     model: modelId,
     messages,
   })
-}
-
-function clientForModelId(modelId: string) {
-  const model = getModelById(modelId)
-  if (!model) {
-    throw new Error(`Model not found: ${modelId}`)
-  }
-
-  const { endpoint, apiKey } = getApiConfig(model.provider)
-  return new OpenAI({
-    apiKey,
-    baseURL: endpoint,
-  })
-}
-
-function getApiConfig(provider: Provider) {
-  switch (provider) {
-    case Provider.OPENAI:
-      return {
-        endpoint: endpoints[Provider.OPENAI],
-        apiKey: env.openaiApiKey,
-      }
-    case Provider.ANTHROPIC:
-      return {
-        endpoint: endpoints[Provider.ANTHROPIC],
-        apiKey: env.anthropicApiKey,
-      }
-    case Provider.GOOGLE:
-      return {
-        endpoint: endpoints[Provider.GOOGLE],
-        apiKey: env.googleApiKey,
-      }
-    case Provider.MISTRAL:
-      return {
-        endpoint: endpoints[Provider.MISTRAL],
-        apiKey: env.mistralApiKey,
-      }
-    case Provider.LLAMA:
-      return {
-        endpoint: endpoints[Provider.LLAMA],
-        apiKey: env.llamaApiKey,
-      }
-  }
 }

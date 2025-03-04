@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
-import { formatDate, getProviderBgColor, truncateText } from '@/lib/utils'
+import { providers } from '@/config/models'
+import { formatDate, truncateText } from '@/lib/utils'
 import { useConfigStore } from '@/store/configStore'
 import { BattleResult } from '@/types'
 import { Trophy, ArrowRight, Trash2, Clock } from 'lucide-react'
@@ -88,7 +89,7 @@ export function BattleHistory({ onSelectBattle }: BattleHistoryProps) {
                   <div className="flex items-center gap-2">
                     <Trophy size={14} className="text-amber-500" />
                     <span className="font-medium">{battle.winner.modelName}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${getProviderBgColor(battle.winner.provider)}`}>
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${providers.style(battle.winner.modelId)}`}>
                       {battle.winner.provider}
                     </span>
                   </div>

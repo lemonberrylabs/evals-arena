@@ -1,4 +1,5 @@
-import { cn, formatResponseTime, getProviderBgColor } from '@/lib/utils'
+import { providers } from '@/config/models'
+import { cn, formatResponseTime } from '@/lib/utils'
 import { JudgeEvaluation, ModelResponse } from '@/types'
 import { Award, CheckCircle2, ChevronsDown, ChevronsUp, Clock, Copy } from 'lucide-react'
 
@@ -22,7 +23,7 @@ export function ModelResponseCard({
   const [expanded, setExpanded] = useState(false)
   const [copied, setCopied] = useState(false)
 
-  const providerBgColor = getProviderBgColor(modelResponse.provider)
+  const providerBgColor = providers.style(modelResponse.modelId)
 
   const handleCopy = () => {
     navigator.clipboard.writeText(modelResponse.response)

@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
+import { Provider } from '@/config/models'
 import { useConfigStore } from '@/store/configStore'
-import { Provider } from '@/types'
 import { Eye, EyeOff, Save, RefreshCw } from 'lucide-react'
 
 import React, { useState } from 'react'

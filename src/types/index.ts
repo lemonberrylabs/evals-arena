@@ -1,27 +1,19 @@
 /**
  * Types for LLM Evals Arena
  */
-
-// Supported LLM providers
-export enum Provider {
-  OPENAI = 'openai',
-  ANTHROPIC = 'anthropic',
-  GOOGLE = 'google',
-  MISTRAL = 'mistral',
-  LLAMA = 'llama',
-}
+import { Provider } from '@/config/models'
 
 // LLM model configuration
 export interface Model {
   id: string
   name: string
-  provider: Provider
   description: string
   capabilities: string[]
   enabled: boolean
 }
 
 // Configuration for API keys and enabled providers
+// TODO(ran) FIXME: fix this!
 export interface ApiConfig {
   openaiApiKey?: string
   anthropicApiKey?: string

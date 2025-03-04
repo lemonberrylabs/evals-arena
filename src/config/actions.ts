@@ -1,7 +1,7 @@
 'use server'
 
-import { env } from './env'
+import { providers } from './models'
 
 export async function isConfigured(): Promise<boolean> {
-  return env.isConfigured
+  return providers.isConfigured()
 }
