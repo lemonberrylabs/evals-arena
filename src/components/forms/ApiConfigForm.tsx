@@ -154,32 +154,6 @@ export function ApiConfigForm() {
           </div>
         </div>
 
-        {/* Cohere */}
-        <div className="p-4 border rounded-md">
-          <div className="flex items-center justify-between">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
-                checked={apiConfig.enabledProviders.includes(Provider.COHERE)}
-                onChange={() => toggleProvider(Provider.COHERE)}
-              />
-              <span className="ml-2 font-medium">Cohere</span>
-            </label>
-            <div className="text-xs text-gray-500">Models: Cohere Command</div>
-          </div>
-
-          <div className="mt-2">
-            <input
-              type={showApiKeys ? 'text' : 'password'}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-              placeholder="Cohere API Key"
-              value={apiConfig.cohereApiKey || ''}
-              onChange={(e) => updateApiConfig({ cohereApiKey: e.target.value })}
-            />
-          </div>
-        </div>
-
         {/* Llama */}
         <div className="p-4 border rounded-md">
           <div className="flex items-center justify-between">

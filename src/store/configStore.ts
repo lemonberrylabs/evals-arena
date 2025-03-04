@@ -28,7 +28,6 @@ export const useConfigStore = create<ConfigState>()(
         anthropicApiKey: '',
         googleApiKey: '',
         mistralApiKey: '',
-        cohereApiKey: '',
         llamaApiKey: '',
         enabledProviders: [Provider.OPENAI], // Default to OpenAI enabled
       },
@@ -67,7 +66,6 @@ export const useConfigStore = create<ConfigState>()(
             anthropicApiKey: '',
             googleApiKey: '',
             mistralApiKey: '',
-            cohereApiKey: '',
             llamaApiKey: '',
             enabledProviders: [Provider.OPENAI],
           },

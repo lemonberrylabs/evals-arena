@@ -34,7 +34,6 @@ export function getProviderBgColor(provider: string): string {
     anthropic: 'bg-purple-100 text-purple-800',
     google: 'bg-blue-100 text-blue-800',
     mistral: 'bg-cyan-100 text-cyan-800',
-    cohere: 'bg-yellow-100 text-yellow-800',
     llama: 'bg-orange-100 text-orange-800',
   }
 

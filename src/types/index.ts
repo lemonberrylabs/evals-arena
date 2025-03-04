@@ -27,7 +27,6 @@ export interface ApiConfig {
   anthropicApiKey?: string
   googleApiKey?: string
   mistralApiKey?: string
-  cohereApiKey?: string
   llamaApiKey?: string
   enabledProviders: Provider[]
 }

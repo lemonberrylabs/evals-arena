@@ -10,7 +10,7 @@ An open-source platform for evaluating and comparing different language models i
 
 - **Battle Arena**: Test the same prompt across multiple LLM models simultaneously
 - **Custom Evaluation**: Define your own judging criteria for comparing responses
-- **Multiple Providers**: Support for OpenAI, Anthropic, Google, Mistral, Cohere, and Llama models
+- **Multiple Providers**: Support for OpenAI, Anthropic, Google, Mistral, and Llama models
 - **Battle History**: Save and review past evaluations
 - **Environment-based Configuration**: Configure API keys via environment variables
 - **Beautiful UI**: Modern, responsive interface with battle theme
