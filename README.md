@@ -25,32 +25,29 @@ An open-source platform for evaluating and comparing different language models i
 ### Installation
 
 1. Clone the repository:
-
-```bash
-git clone https://github.com/lemonberrylabs/evals-arena
-cd evals-arena
-```
+   ```bash
+   git clone https://github.com/lemonberrylabs/evals-arena
+   cd evals-arena
+   ```
 
 2. Install dependencies:
-
-```bash
-yarn install
-```
+   ```bash
+   yarn install
+   ```
 
 3. Set up your environment variables:
 
-Create a `.env.local` file in the project root with your API keys (see [ENV_SETUP.md](ENV_SETUP.md) for details).
+   Create a `.env.local` file in the project root with your API keys (see [ENV_SETUP.md](ENV_SETUP.md) for details).
 
-```
-OPENAI_API_KEY=your-openai-api-key
-NEXT_PUBLIC_ENABLED_PROVIDERS=openai
-```
+   ```
+   OPENAI_API_KEY=your-openai-api-key
+   NEXT_PUBLIC_ENABLED_PROVIDERS=openai
+   ```
 
 4. Start the development server:
-
-```bash
-yarn dev
-```
+   ```bash
+   yarn dev
+   ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
@@ -75,15 +72,15 @@ See [ENV_SETUP.md](ENV_SETUP.md) for complete details on configuring the applica
 - See which model won based on the criteria
 - Save results for future reference
 
-## Tech Stack
+## Screenshots
 
-- [Next.js](https://nextjs.org/) - React framework
-- [TypeScript](https://www.typescriptlang.org/) - Type safety
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [Zustand](https://github.com/pmndrs/zustand) - State management
-- [React Hook Form](https://react-hook-form.com/) - Form handling
-- [Zod](https://github.com/colinhacks/zod) - Schema validation
-- [Lucide Icons](https://lucide.dev/) - Beautiful icons
+![Arena](.github/arena.png)
+
+![Models](.github/models.png)
+
+![History](.github/history.png)
+
+![Battle](.github/judge.png)
 
 ## Adding a custom LLM provider
 
@@ -108,6 +105,16 @@ This application is designed for local development and educational purposes. In 
 
 - API keys are stored in environment variables that are not exposed to the client
 - For production use, consider implementing a backend API gateway to proxy requests
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Zustand](https://github.com/pmndrs/zustand) - State management
+- [React Hook Form](https://react-hook-form.com/) - Form handling
+- [Zod](https://github.com/colinhacks/zod) - Schema validation
+- [Lucide Icons](https://lucide.dev/) - Beautiful icons
 
 ## Contributing
 
