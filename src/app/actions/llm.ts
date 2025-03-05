@@ -1,17 +1,23 @@
 'use server'
 
-import { providers } from '@/config/models'
+import { defaultJudgeCriteria, providers } from '@/config/models'
 import { BattleSetup, JudgeEvaluation, ModelResponse } from '@/types'
 import { ChatCompletionMessageParam } from 'openai/resources/index.mjs'
+
+type GenerateModelResponseParams = {
+  modelId: string
+  userPrompt: string
+  developerPrompt?: string
+}
 
 /**
  * Generates a model response for a given prompt
  */
-export async function generateModelResponse(
-  modelId: string,
-  developerPrompt: string,
-  userPrompt: string
-): Promise<ModelResponse> {
+export async function generateModelResponse({
+  modelId,
+  userPrompt,
+  developerPrompt,
+}: GenerateModelResponseParams): Promise<ModelResponse> {
   const model = providers.modelById(modelId)
   if (!model) {
     throw new Error(`Model not found: ${modelId}`)
@@ -88,8 +94,11 @@ export async function judgeResponses(
   ## Original User Prompt
   ${battleSetup.userPrompt}
   
+  ## Original Developer Prompt
+  ${battleSetup.developerPrompt || ''}
+
   ## Judging Criteria
-  ${battleSetup.judgeCriteria}
+  ${battleSetup.judgeCriteria || defaultJudgeCriteria}
   
   ## Model Responses to Evaluate
   

@@ -72,6 +72,32 @@ See [ENV_SETUP.md](ENV_SETUP.md) for complete details on configuring the applica
 - See which model won based on the criteria
 - Save results for future reference
 
+### API Mode
+
+The application also supports a REST API for running battles.
+
+- route: `/api/battle` (see [route.ts](src/app/api/battle/route.ts))
+- method: `POST`
+- body: `BattleSetup` (see [BattleSetup](src/types/index.ts))
+  - `userPrompt (required)`: The prompt to test
+  - `selectedModels (required)`: An array of model ids to include in the battle
+  - `judgeCriteria (optional)`: The criteria for judging the responses. If not provided, the default judge criteria will be used (see [defaultJudgeCriteria](src/config/models.ts)).
+  - `developerPrompt (optional)`: System instructions for the models
+- response: `BattleResponse` (see [BattleResponse](src/types/index.ts))
+  - `modelResponses`: An array of model responses (see [ModelResponse](src/types/index.ts))
+  - `judgeEvaluation`: An array of judge evaluations (see [JudgeEvaluation](src/types/index.ts))
+
+Example:
+```bash
+curl localhost:3000/api/battle -H "Content-Type: application/json" -d '
+{
+  "userPrompt": "tell me about the moors like I was 8 years old",
+  "selectedModels": ["gpt-4o", "gemini-1.5-pro"],
+  "developerPrompt": "The response should be in the style of a childrens book."
+}
+'
+```
+
 ## Screenshots
 
 ![Arena](.github/arena.png)

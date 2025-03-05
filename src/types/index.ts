@@ -16,8 +16,13 @@ export interface Model {
 export interface BattleSetup {
   developerPrompt?: string
   userPrompt: string
-  judgeCriteria: string
+  judgeCriteria?: string
   selectedModels: string[]
+}
+
+export interface BattleResponse {
+  modelResponses: ModelResponse[]
+  judgeEvaluation: JudgeEvaluation[]
 }
 
 // Model response in a battle

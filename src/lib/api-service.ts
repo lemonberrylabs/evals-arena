@@ -1,5 +1,5 @@
 import { generateModelResponse, judgeResponses } from '@/app/actions/llm'
-import { BattleSetup, JudgeEvaluation, ModelResponse } from '@/types'
+import { BattleResponse, BattleSetup } from '@/types'
 
 /**
  * Runs a complete battle with the given setup
@@ -7,10 +7,7 @@ import { BattleSetup, JudgeEvaluation, ModelResponse } from '@/types'
 export async function runBattle(
   battleSetup: BattleSetup,
   onProgress: (progress: number) => void
-): Promise<{
-  modelResponses: ModelResponse[]
-  judgeEvaluation: JudgeEvaluation[]
-}> {
+): Promise<BattleResponse> {
   try {
     // Step 1: Generate responses from all selected models
     let completedModels = 0
@@ -18,7 +15,11 @@ export async function runBattle(
     // Use Promise.all for parallel processing
     const modelResponses = await Promise.all(
       battleSetup.selectedModels.map(async (modelId) => {
-        const response = await generateModelResponse(modelId, battleSetup.developerPrompt || '', battleSetup.userPrompt)
+        const response = generateModelResponse({
+          modelId,
+          userPrompt: battleSetup.userPrompt,
+          developerPrompt: battleSetup.developerPrompt,
+        })
 
         completedModels++
         onProgress((completedModels / battleSetup.selectedModels.length) * 80) // First 80% of progress

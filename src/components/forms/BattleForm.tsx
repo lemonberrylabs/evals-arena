@@ -1,5 +1,6 @@
 import { ModelSelection } from '@/components/forms/ModelSelection'
 import { Button } from '@/components/ui/button'
+import { defaultJudgeCriteria } from '@/config/models'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Award, Shield, Sword } from 'lucide-react'
 import { z } from 'zod'
@@ -16,15 +17,6 @@ const battleFormSchema = z.object({
 })
 
 type BattleFormValues = z.infer<typeof battleFormSchema>
-
-const defaultJudgeCriteria = `Please evaluate the responses based on the following criteria:
-1. Correctness - How factually accurate is the response?
-2. Completeness - How thoroughly does it address all aspects of the prompt?
-3. Clarity - How clear and easy to understand is the response?
-4. Creativity - Does the response show original thinking where appropriate?
-5. Usefulness - How practical and helpful is the response?
-
-Assign a score from 0-100 for each model.`
 
 interface BattleFormProps {
   onSubmit: (values: BattleFormValues) => void
