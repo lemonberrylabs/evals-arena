@@ -15,10 +15,10 @@ export async function POST(req: Request) {
 
   try {
     const battleResponse = await runBattle(battleSetup, () => {})
-    return new Response(JSON.stringify(battleResponse), { status: 200 })
+    return Response.json(battleResponse, { status: 200 })
   } catch (error) {
     console.error('Error running battle:', error)
     const msg = error instanceof Error ? error.message : 'Internal server error'
-    return new Response(JSON.stringify({ error: msg }), { status: 500 })
+    return Response.json({ error: msg }, { status: 500 })
   }
 }
